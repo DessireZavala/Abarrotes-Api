@@ -65,7 +65,14 @@
         // Función para obtener productos desde el servidor
         function cargarProductos() {
             fetch('http://localhost:3000/productos')
-                .then(response => response.json())
+                .then(response => {
+                if (!response.ok) {
+                    return response.json().then(error => { // Si no es exitoso, parsear el error
+                    throw new Error(error.message || 'Error desconocido al cargar el productos');
+                    });
+                }
+                return response.json();
+            })
                 .then(data => {
                     const productos = data.productos;
                     const container = document.getElementById('productos-container');
@@ -83,13 +90,24 @@
                         container.appendChild(div);
                     });
                 })
-                .catch(error => console.error('Error al cargar productos:', error));
+                //.catch(error => console.error('Error al cargar productos:', error));
+                .catch(error => {
+                console.error('Error al cargar productos:', error)
+                alert(`Error ${error.message}, Error al cargar productos: `);
+            });
         }
 
         // Función para cargar las categorías en el menú desplegable
         function cargarCategorias() {
             fetch('http://localhost:3000/categorias')
-                .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(error => { // Si no es exitoso, parsear el error
+                    throw new Error(error.message || 'Error desconocido al cargar categorías');
+                    });
+                }
+                return response.json();
+            })
                 .then(data => {
                     const categorias = data;
                     const categoriaSelect = document.getElementById('categoria_id');
@@ -100,7 +118,11 @@
                         categoriaSelect.appendChild(option);
                     });
                 })
-                .catch(error => console.error('Error al cargar categorías:', error));
+                //.catch(error => console.error('Error al cargar categorías:', error));
+                .catch(error => {
+                console.error('Error al cargar categorías:', error)
+                alert(`Error ${error.message}, Error al cargar categorías: `);
+            });
         }
 
         // Llamar a cargarProductos y cargarCategorias cuando la página se carga
@@ -137,7 +159,14 @@
                 },
                 body: JSON.stringify(nuevoProducto)
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(error => { // Si no es exitoso, parsear el error
+                    throw new Error(error.message || 'Error desconocido al agregar el producto');
+                    });
+                }
+                return response.json();
+            })
             .then(data => {
                 // Mostrar el producto agregado y recargar la lista de productos
                 alert('Producto agregado con éxito');
@@ -146,7 +175,7 @@
             })
             .catch(error => {
                 console.error('Error al agregar el producto:', error);
-                alert('Hubo un error al agregar el producto');
+                alert(`Hubo un error: ${error.message}`);
             });
         });
 
@@ -164,7 +193,14 @@
                 },
                 body: JSON.stringify({ nombre_categoria })
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(error => { // Si no es exitoso, parsear el error
+                    throw new Error(error.message || 'Error desconocido al agregar la categoría');
+                    });
+                }
+                return response.json();
+            })
             .then(data => {
                 alert('Categoría agregada con éxito');
                 cargarCategorias(); // Recargar categorías
@@ -172,7 +208,7 @@
             })
             .catch(error => {
                 console.error('Error al agregar la categoría:', error);
-                alert('Hubo un error al agregar la categoría');
+                alert(`Hubo un error: ${error.message}`);
             });
         });
 
@@ -190,14 +226,21 @@
                 },
                 body: JSON.stringify({ nombre_marca })
             })
-            .then(response => response.json())
+              .then(response => {
+                if (!response.ok) {
+                    return response.json().then(error => { // Si no es exitoso, parsear el error
+                    throw new Error(error.message || 'Error desconocido al agregar la marca');
+                    });
+                }
+                return response.json();
+            })
             .then(data => {
                 alert('Marca agregada con éxito');
                 document.getElementById('agregarMarcaForm').reset(); // Limpiar formulario
             })
             .catch(error => {
                 console.error('Error al agregar la marca:', error);
-                alert('Hubo un error al agregar la marca');
+                alert(`Hubo un error: ${error.message}`);
             });
         });
     </script>

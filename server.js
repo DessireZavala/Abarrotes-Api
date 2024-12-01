@@ -45,7 +45,7 @@ app.get('/categorias', async (req, res) => {
         return res.json(categorias);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error interno' });
+        res.status(500).json({ message: '500 Error interno' });
     }
 });
 
@@ -54,14 +54,14 @@ app.post('/categorias', async (req, res) => {
     try {
         const nombre = req.body?.nombre_categoria;
         if (!nombre) {
-            return res.status(400).json({ message: 'Bad request, nombre no encontrado' });
+            return res.status(400).json({ message: '400 Bad request, nombre no encontrado' });
         }
         const categoria = new categoriaModel({ nombre_categoria: nombre });
         const save = await categoria.save();
         return res.status(201).json({ categoria: save });
     } catch (error) {
         console.error('Error', error);
-        res.status(500).json({ message: 'Error al crear categoría' });
+        res.status(500).json({ message: '500 Error al crear categoría' });
     }
 });
 
@@ -71,14 +71,14 @@ app.post('/marcas', async (req, res) => {
     try {
         const nombre = req.body?.nombre_marca;
         if (!nombre) {
-            return res.status(400).json({ message: 'Bad request, nombre no encontrado' });
+            return res.status(400).json({ message: '400 Bad request, nombre no encontrado' });
         }
         const marca = new marcaModel({ nombre_marca: nombre });
         const save = await marca.save();
         return res.status(201).json({ marca: save });
     } catch (error) {
         console.error('Error', error);
-        res.status(500).json({ message: 'Error al crear marca' });
+        res.status(500).json({ message: '500 Error al crear marca' });
     }
 });
 
@@ -91,7 +91,7 @@ app.get('/productos', async (req, res) => {
         return res.json({ productos });
     } catch (error) {
         console.error('Error', error);
-        res.status(500).json({ message: 'Error interno' });
+        res.status(500).json({ message: '500 Error interno' });
     }
 });
 
@@ -101,14 +101,14 @@ app.post('/productos', async (req, res) => {
         const { nombre, descripcion, precio, categoria_id, marca_id } = req.body;
 
         if (!nombre || !descripcion || !precio || !categoria_id || !marca_id) {
-            return res.status(400).json({ message: 'Bad request, faltan datos' });
+            return res.status(400).json({ message: '400 Bad request, faltan datos' });
         }
 
         const categoria = await categoriaModel.findById(categoria_id);
         const marca = await marcaModel.findById(marca_id);
 
         if (!categoria || !marca) {
-            return res.status(400).json({ message: 'Categoría o marca no encontrados' });
+            return res.status(400).json({ message: '400 Categoría o marca no encontrados' });
         }
 
         const producto = new productoModel({
@@ -123,6 +123,6 @@ app.post('/productos', async (req, res) => {
         return res.status(201).json({ producto: save });
     } catch (error) {
         console.error('Error', error);
-        res.status(500).json({ message: 'Error al crear producto' });
+        res.status(500).json({ message: '500 Error al crear producto' });
     }
 });
