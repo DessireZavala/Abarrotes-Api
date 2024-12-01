@@ -1,0 +1,17 @@
+# Ignorar node_modules
+node_modules/
+
+# Ignorar archivos de logs
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Ignorar archivos de sistema (ej. .DS_Store en Mac)
+.DS_Store
+
+# Ignorar archivos de configuración del editor (ej. VSCode)
+.vscode/
+
+# Otros archivos temporales o generados que no sean necesarios
+*.log
+*.env
