@@ -65,8 +65,17 @@ app.post('/categorias', async (req, res) => {
     }
 });
 
-// Otras rutas para marcas y productos
-// (Ejemplo: crear una nueva marca)
+// Ruta para obtener todas las marcas
+app.get('/marcas', async (req, res) => {
+    try {
+        const marcas = await marcaModel.find();  // Aquí obtenemos todas las marcas registradas
+        return res.json(marcas);  // Enviar la lista de marcas al cliente
+    } catch (error) {
+        console.error('Error', error);
+        res.status(500).json({ message: '500 Error al obtener marcas' });
+    }
+});
+
 app.post('/marcas', async (req, res) => {
     try {
         const nombre = req.body?.nombre_marca;
