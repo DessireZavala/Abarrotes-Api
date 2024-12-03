@@ -164,3 +164,18 @@ app.post('/productos', async (req, res) => {
         res.status(500).json({ message: '500 Error al crear producto' });
     }
 });
+
+// Ruta para eliminar un producto por ID
+app.delete('/productos/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const productoEliminado = await productoModel.findByIdAndDelete(id);
+        if (!productoEliminado) {
+            return res.status(404).json({ message: '404 Producto no encontrado' });//no se si eliminar esto ya que es casi imposible que aparesca este error
+        }
+        res.json({ message: 'Producto eliminado con éxito' });
+    } catch (error) {
+        console.error('Error al eliminar el producto:', error);
+        res.status(500).json({ message: '500 Error interno del servidor' });
+    }
+});

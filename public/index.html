@@ -83,6 +83,7 @@
                     container.innerHTML = ''; // Limpiar productos anteriores
                     productos.forEach(producto => {
                         const div = document.createElement('div');
+                        div.setAttribute('data-id', producto._id);
                         div.classList.add('producto');
                         div.innerHTML = `
                             <h3>${producto.nombre}</h3>
@@ -90,6 +91,7 @@
                             <p>Precio: $${producto.precio}</p>
                             <p>Categoría: ${producto.categoria.nombre_categoria}</p>
                             <p>Marca: ${producto.marca.nombre_marca}</p>
+                            <button onclick="eliminarProducto('${producto._id}',this)">Eliminar</button>
                         `;
                         container.appendChild(div);
                     });
@@ -99,7 +101,28 @@
                     alert(`Error ${error.message}, Error al cargar productos.`);
                 });
         }
-
+        function eliminarProducto(id, button) {
+        if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
+            fetch(`http://localhost:3000/productos/${id}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(error => {
+                            throw new Error(error.message || 'No se pudo eliminar el producto');
+                        });
+                }
+                const productoDiv = button.closest('.producto');
+                productoDiv.remove();
+                alert('Producto eliminado con éxito');
+            })
+            .catch(error => {
+                console.error('Error al eliminar producto:', error);
+                alert(`Error: ${error.message} No se pudo eliminar el producto`);
+            });
+        }
+    }
+//ccheckpoint
         // Función para cargar las categorías en el menú desplegable
         function cargarCategorias() {
             fetch('http://localhost:3000/categorias')
