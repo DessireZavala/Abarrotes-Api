@@ -42,6 +42,9 @@ app.get('/categorias', async (req, res) => {
                 }
             }
         ]);
+        if (!categorias.length) { // Si no hay categorías
+            return res.status(404).json({ message: '404 No se encontraron categorías' });
+        }
         return res.json(categorias);
     } catch (error) {
         console.error(error);
@@ -56,6 +59,13 @@ app.post('/categorias', async (req, res) => {
         if (!nombre) {
             return res.status(400).json({ message: '400 Bad request, nombre no encontrado' });
         }
+
+
+        const categoriaExistente = await categoriaModel.findOne({ nombre_categoria: nombre });
+        if (categoriaExistente) {
+            return res.status(409).json({ message: '409 Conflicto: La categoría ya existe' });
+        }
+
         const categoria = new categoriaModel({ nombre_categoria: nombre });
         const save = await categoria.save();
         return res.status(201).json({ categoria: save });
@@ -69,6 +79,10 @@ app.post('/categorias', async (req, res) => {
 app.get('/marcas', async (req, res) => {
     try {
         const marcas = await marcaModel.find();  // Aquí obtenemos todas las marcas registradas
+        if (!marcas.length) { // Si no hay categorías
+            return res.status(404).json({ message: '404 No se encontraron categorías' });
+        }
+
         return res.json(marcas);  // Enviar la lista de marcas al cliente
     } catch (error) {
         console.error('Error', error);
@@ -81,6 +95,11 @@ app.post('/marcas', async (req, res) => {
         const nombre = req.body?.nombre_marca;
         if (!nombre) {
             return res.status(400).json({ message: '400 Bad request, nombre no encontrado' });
+        }
+
+        const marcaExistente = await marcaModel.findOne({ nombre_marca: nombre });
+        if (marcaExistente) {
+            return res.status(409).json({ message: '409 Conflicto: La categoría ya existe' });
         }
         const marca = new marcaModel({ nombre_marca: nombre });
         const save = await marca.save();
@@ -97,6 +116,12 @@ app.get('/productos', async (req, res) => {
         const productos = await productoModel.find({})
             .populate('categoria')
             .populate('marca');
+
+
+        if (!productos.length) { // Si no hay productos
+            return res.status(404).json({ message: '404 No se encontraron productos' });
+        }
+
         return res.json({ productos });
     } catch (error) {
         console.error('Error', error);
@@ -116,8 +141,12 @@ app.post('/productos', async (req, res) => {
         const categoria = await categoriaModel.findById(categoria_id);
         const marca = await marcaModel.findById(marca_id);
 
-        if (!categoria || !marca) {
-            return res.status(400).json({ message: '400 Categoría o marca no encontrados' });
+         if (!categoria) {
+            return res.status(404).json({ message: '404 Categoría no encontrada' });
+        }
+
+        if (!marca) {
+            return res.status(404).json({ message: '404 Marca no encontrada' });
         }
 
         const producto = new productoModel({
