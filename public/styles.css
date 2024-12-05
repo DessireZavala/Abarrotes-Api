@@ -3,6 +3,7 @@ body {
   background-color: #edf0ed; /* Lightened Jet Stream */
   margin: 0;
   padding: 0;
+  height: 100%;
 }
 
 header {
@@ -46,10 +47,12 @@ h2 {
 
 .contprod {
   width: 100%;
+  height: 100vh;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  background-color: #f0e9de; /* Softened Dark Vanilla */
+  background-color: #f0e9de; 
+  box-sizing: border-box;
 }
 
 .sidecont {
@@ -95,7 +98,7 @@ h2 {
 
 .producto {
   position: relative;
-  border: 1px solid #d7cbb2; /* Dark Vanilla */
+  border: 1px solid #ffffff; 
   padding: 10px;
   margin: 10px;
   width: 200px;
@@ -109,18 +112,20 @@ h2 {
 
 .producto .info-completa {
   display: none;
-  position: absolute;
+  z-index: 99;
+  position: relative;
   top: 0;
   left: 0;
-  background: rgba(255, 255, 255, 0.9);
+  background: #f0e9de;
   width: 100%;
-  height: 100%;
-  padding: 10px;
+  height: 200px;
+  padding: 5px;
   text-align: center;
 }
 
 .producto:hover .info-completa {
   display: block;
+
 }
 
 .producto img {
@@ -134,6 +139,7 @@ h2 {
   margin: 10px 0 0;
   font-size: 1.2em;
   color: #6a7a5a; /* Axolotl */
+  text-align: center;
 }
 
 .producto:hover {
@@ -198,5 +204,5 @@ button:hover {
   transition: background-color 0.2s;
 }
 .menubtn:hover {
-  background-color: #6a7a5a; /* Axolotl */
+  background-color: #6a7a5a;
 }
