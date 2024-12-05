@@ -39,7 +39,7 @@
             <input type="text" id="descripcion" required>
 
             <label for="precio">Precio:</label>
-            <input type="number" id="precio" required>
+            <input type="number" id="precio" step="0.01" required>
 
             <label for="categoria_id">Categoría:</label>
             <select id="categoria_id" required>
@@ -48,8 +48,12 @@
             </select>
 
             <label for="marca_id">Marca:</label>
-            <input type="text" id="marca_id" required>
+            <select id="marca_id" required>
+                <option value="">Seleccionar marca</option>
+                <!-- Las opciones de marcas se cargarán aquí -->
+            </select>
 
+            <br><br>
             <button type="submit">Agregar Producto</button>
         </form>
 
@@ -77,13 +81,21 @@
         // Función para obtener productos desde el servidor
         function cargarProductos() {
             fetch('http://localhost:3000/productos')
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(error => {
+                            throw new Error(error.message || 'Error desconocido al cargar los productos');
+                        });
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     const productos = data.productos;
                     const container = document.getElementById('productos-container');
                     container.innerHTML = ''; // Limpiar productos anteriores
                     productos.forEach(producto => {
                         const div = document.createElement('div');
+                        div.setAttribute('data-id', producto._id);
                         div.classList.add('producto');
                         div.innerHTML = `
                             <h3>${producto.nombre}</h3>
@@ -91,34 +103,102 @@
                             <p>Precio: $${producto.precio}</p>
                             <p>Categoría: ${producto.categoria.nombre_categoria}</p>
                             <p>Marca: ${producto.marca.nombre_marca}</p>
+                            <button onclick="eliminarProducto('${producto._id}',this)">Eliminar</button>
                         `;
                         container.appendChild(div);
                     });
                 })
-                .catch(error => console.error('Error al cargar productos:', error));
+                .catch(error => {
+                    console.error('Error al cargar productos:', error);
+                    alert(`Error ${error.message}, Error al cargar productos.`);
+                });
         }
-
+        function eliminarProducto(id, button) {
+        if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
+            fetch(`http://localhost:3000/productos/${id}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(error => {
+                            throw new Error(error.message || 'No se pudo eliminar el producto');
+                        });
+                }
+                const productoDiv = button.closest('.producto');
+                productoDiv.remove();
+                alert('Producto eliminado con éxito');
+            })
+            .catch(error => {
+                console.error('Error al eliminar producto:', error);
+                alert(`Error: ${error.message} No se pudo eliminar el producto`);
+            });
+        }
+    }
+//ccheckpoint
         // Función para cargar las categorías en el menú desplegable
         function cargarCategorias() {
             fetch('http://localhost:3000/categorias')
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(error => {
+                            throw new Error(error.message || 'Error desconocido al cargar categorías');
+                        });
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     const categorias = data;
                     const categoriaSelect = document.getElementById('categoria_id');
+                    
+                    // Limpiar las opciones existentes antes de agregar nuevas categorías
+                    categoriaSelect.innerHTML = '<option value="">Seleccionar categoría</option>';
+
                     categorias.forEach(categoria => {
                         const option = document.createElement('option');
-                        option.value = categoria._id;
-                        option.textContent = categoria.nombre_categoria;
+                        option.value = categoria._id;  // Asegúrate de que el id de la categoría se llama _id
+                        option.textContent = categoria.nombre_categoria;  // Suponiendo que la propiedad es 'nombre_categoria'
                         categoriaSelect.appendChild(option);
                     });
                 })
-                .catch(error => console.error('Error al cargar categorías:', error));
+                .catch(error => {
+                    console.error('Error al cargar categorías:', error);
+                    alert(`Error ${error.message}, Error al cargar categorías.`);
+                });
         }
 
-        // Llamar a cargarProductos y cargarCategorias cuando la página se carga
+        // Función para cargar las marcas en el menú desplegable
+        function cargarMarcas() {
+            fetch('http://localhost:3000/marcas')
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(error => {
+                            throw new Error(error.message || 'Error desconocido al cargar marcas');
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const marcas = data;
+                    const marcaSelect = document.getElementById('marca_id');
+                    marcaSelect.innerHTML = '<option value="">Seleccionar marca</option>'; // Limpiar opciones anteriores
+                    marcas.forEach(marca => {
+                        const option = document.createElement('option');
+                        option.value = marca._id;  // Asegúrate de que el id de la marca se llama _id
+                        option.textContent = marca.nombre_marca;  // Suponiendo que la propiedad es 'nombre_marca'
+                        marcaSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error al cargar marcas:', error);
+                    alert(`Error ${error.message}, Error al cargar marcas.`);
+                });
+        }
+
+        // Llamar a cargarProductos, cargarCategorias y cargarMarcas cuando la página se carga
         window.onload = function() {
             cargarProductos();
             cargarCategorias();
+            cargarMarcas();
         };
 
         // Manejar el envío del formulario para agregar un producto
@@ -149,16 +229,22 @@
                 },
                 body: JSON.stringify(nuevoProducto)
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(error => {
+                        throw new Error(error.message || 'Error desconocido al agregar el producto');
+                    });
+                }
+                return response.json();
+            })
             .then(data => {
-                // Mostrar el producto agregado y recargar la lista de productos
                 alert('Producto agregado con éxito');
                 cargarProductos(); // Recargar productos
                 document.getElementById('agregarProductoForm').reset(); // Limpiar el formulario
             })
             .catch(error => {
                 console.error('Error al agregar el producto:', error);
-                alert('Hubo un error al agregar el producto');
+                alert(`Hubo un error: ${error.message}`);
             });
         });
 
@@ -176,7 +262,14 @@
                 },
                 body: JSON.stringify({ nombre_categoria })
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(error => {
+                        throw new Error(error.message || 'Error desconocido al agregar la categoría');
+                    });
+                }
+                return response.json();
+            })
             .then(data => {
                 alert('Categoría agregada con éxito');
                 cargarCategorias(); // Recargar categorías
@@ -184,7 +277,7 @@
             })
             .catch(error => {
                 console.error('Error al agregar la categoría:', error);
-                alert('Hubo un error al agregar la categoría');
+                alert(`Hubo un error: ${error.message}`);
             });
         });
 
@@ -202,14 +295,22 @@
                 },
                 body: JSON.stringify({ nombre_marca })
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(error => {
+                        throw new Error(error.message || 'Error desconocido al agregar la marca');
+                    });
+                }
+                return response.json();
+            })
             .then(data => {
                 alert('Marca agregada con éxito');
+                cargarMarcas(); // Recargar marcas
                 document.getElementById('agregarMarcaForm').reset(); // Limpiar formulario
             })
             .catch(error => {
                 console.error('Error al agregar la marca:', error);
-                alert('Hubo un error al agregar la marca');
+                alert(`Hubo un error: ${error.message}`);
             });
         });
     </script>
