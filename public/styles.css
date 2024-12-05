@@ -1,23 +1,33 @@
 body {
   font-family: "Arial", sans-serif;
-  background-color: #EDF0ED; /* Lightened Jet Stream */
+  background-color: #edf0ed; /* Lightened Jet Stream */
   margin: 0;
   padding: 0;
 }
 
 header {
   height: 75px;
-  background-color: #AAC4BC; /* Muted Morning Blue */
+  background-color: #aac4bc; /* Muted Morning Blue */
   padding: 20px;
   text-align: center;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+header .logo {
+  width: 150px;
+  height: 140px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 20px;
 }
 
 h1 {
   margin: 0;
-  color: #6A7A5A; /* Axolotl */
+  color: #6a7a5a; /* Axolotl */
   font-size: 2.5em;
 }
 
@@ -28,7 +38,7 @@ main {
 }
 
 h2 {
-  color: #6A7A5A; /* Axolotl */
+  color: #6a7a5a; /* Axolotl */
   margin-top: 20px;
   font-size: 1.8em;
   text-align: center;
@@ -39,7 +49,7 @@ h2 {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  background-color: #F0E9DE; /* Softened Dark Vanilla */
+  background-color: #f0e9de; /* Softened Dark Vanilla */
 }
 
 .sidecont {
@@ -50,7 +60,7 @@ h2 {
   transition: transform 0.8s ease-in-out;
   width: 250px;
   height: 100%;
-  background-color: #EDF0ED; 
+  background-color: #edf0ed;
   padding: 20px;
   border-radius: 0 10px 10px 0;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -67,11 +77,11 @@ h2 {
   height: 15px;
 }
 ::-webkit-scrollbar-track {
-  background-color: #EDF0ED; /* Lightened Jet Stream */
+  background-color: #edf0ed; /* Lightened Jet Stream */
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #8DAF9B; /* Morning Blue */
+  background-color: #8daf9b; /* Morning Blue */
   border-radius: 5px;
 }
 
@@ -85,7 +95,7 @@ h2 {
 
 .producto {
   position: relative;
-  border: 1px solid #D7CBB2; /* Dark Vanilla */
+  border: 1px solid #d7cbb2; /* Dark Vanilla */
   padding: 10px;
   margin: 10px;
   width: 200px;
@@ -123,7 +133,7 @@ h2 {
 .producto h3 {
   margin: 10px 0 0;
   font-size: 1.2em;
-  color: #6A7A5A; /* Axolotl */
+  color: #6a7a5a; /* Axolotl */
 }
 
 .producto:hover {
@@ -144,7 +154,7 @@ select,
 button {
   padding: 10px;
   border-radius: 5px;
-  border: 1px solid #AAC4BC; /* Opal */
+  border: 1px solid #aac4bc; /* Opal */
   width: 100%;
   box-sizing: border-box;
   transition: border-color 0.2s;
@@ -153,12 +163,12 @@ button {
 input:focus,
 select:focus,
 button:focus {
-  border-color: #8DAF9B; /* Morning Blue */
+  border-color: #8daf9b; /* Morning Blue */
   outline: none;
 }
 
 button {
-  background-color: #8DAF9B; /* Morning Blue */
+  background-color: #8daf9b; /* Morning Blue */
   color: #fff;
   cursor: pointer;
   border: none;
@@ -167,14 +177,14 @@ button {
 }
 
 button:hover {
-  background-color: #6A7A5A; /* Axolotl */
+  background-color: #6a7a5a; /* Axolotl */
 }
 
 .menubtn {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background-color: #8DAF9B; /* Morning Blue */
+  background-color: #8daf9b; /* Morning Blue */
   color: #fff;
   border: none;
   cursor: pointer;
@@ -188,5 +198,5 @@ button:hover {
   transition: background-color 0.2s;
 }
 .menubtn:hover {
-  background-color: #6A7A5A; /* Axolotl */
+  background-color: #6a7a5a; /* Axolotl */
 }
