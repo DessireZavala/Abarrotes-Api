@@ -25,7 +25,7 @@
                 <img src="ruta-de-tu-imagen2.jpg" alt="Producto 2">
                 <h3>Nombre del Producto 2</h3>
             </div>
-            <!-- Agrega más productos según sea necesario -->
+            <!-- Agregar mas productos por si nos piden mas -->
         </div>
     </div>
         <!-- Formulario para agregar un nuevo producto -->
@@ -44,20 +44,20 @@
             <label for="categoria_id">Categoría:</label>
             <select id="categoria_id" required>
                 <option value="">Seleccionar categoría</option>
-                <!-- Las opciones de categorías se cargarán aquí -->
+                <!-- Las opciones de las categorias van aqui -->
             </select>
 
             <label for="marca_id">Marca:</label>
             <select id="marca_id" required>
                 <option value="">Seleccionar marca</option>
-                <!-- Las opciones de marcas se cargarán aquí -->
+                <!-- Las marcas de los productos aquí -->
             </select>
 
             <br><br>
             <button type="submit">Agregar Producto</button>
         </form>
 
-        <!-- Formulario para agregar una nueva categoría -->
+        <!-- Formulario para  nueva categoría -->
         <h2>Agregar Nueva Categoría</h2>
         <form id="agregarCategoriaForm">
             <label for="nombre_categoria">Nombre de la categoría:</label>
@@ -66,7 +66,7 @@
             <button type="submit">Agregar Categoría</button>
         </form>
 
-        <!-- Formulario para agregar una nueva marca -->
+        <!-- Formulario para nueva marca -->
         <h2>Agregar Nueva Marca</h2>
         <form id="agregarMarcaForm">
             <label for="nombre_marca">Nombre de la marca:</label>
@@ -92,7 +92,7 @@
                 .then(data => {
                     const productos = data.productos;
                     const container = document.getElementById('productos-container');
-                    container.innerHTML = ''; // Limpiar productos anteriores
+                    container.innerHTML = ''; // Limpiar productos pasados 
                     productos.forEach(producto => {
                         const div = document.createElement('div');
                         div.setAttribute('data-id', producto._id);
@@ -135,7 +135,7 @@
         }
     }
 //ccheckpoint
-        // Función para cargar las categorías en el menú desplegable
+        // Función para meter las categorías en el menú desplegable
         function cargarCategorias() {
             fetch('http://localhost:3000/categorias')
                 .then(response => {
@@ -150,13 +150,13 @@
                     const categorias = data;
                     const categoriaSelect = document.getElementById('categoria_id');
                     
-                    // Limpiar las opciones existentes antes de agregar nuevas categorías
+                    // Limpiar las opciones que hay antes de subir nuevas categorías
                     categoriaSelect.innerHTML = '<option value="">Seleccionar categoría</option>';
 
                     categorias.forEach(categoria => {
                         const option = document.createElement('option');
-                        option.value = categoria._id;  // Asegúrate de que el id de la categoría se llama _id
-                        option.textContent = categoria.nombre_categoria;  // Suponiendo que la propiedad es 'nombre_categoria'
+                        option.value = categoria._id;  // checar que coincidan los nombres que el id de la categoría se llama _id porfas 
+                        option.textContent = categoria.nombre_categoria;  
                         categoriaSelect.appendChild(option);
                     });
                 })
@@ -166,7 +166,7 @@
                 });
         }
 
-        // Función para cargar las marcas en el menú desplegable
+        // Función para subir las marcas en el menú desplegable
         function cargarMarcas() {
             fetch('http://localhost:3000/marcas')
                 .then(response => {
@@ -183,8 +183,8 @@
                     marcaSelect.innerHTML = '<option value="">Seleccionar marca</option>'; // Limpiar opciones anteriores
                     marcas.forEach(marca => {
                         const option = document.createElement('option');
-                        option.value = marca._id;  // Asegúrate de que el id de la marca se llama _id
-                        option.textContent = marca.nombre_marca;  // Suponiendo que la propiedad es 'nombre_marca'
+                        option.value = marca._id;  // checar el nombre del id tambien porfas
+                        option.textContent = marca.nombre_marca;  
                         marcaSelect.appendChild(option);
                     });
                 })
@@ -201,9 +201,9 @@
             cargarMarcas();
         };
 
-        // Manejar el envío del formulario para agregar un producto
+        //envío del formulario para agregar un producto
         document.getElementById('agregarProductoForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Evitar que la página se recargue
+            event.preventDefault(); // Evita que la página se recargue
 
             // Obtener los valores del formulario
             const nombre = document.getElementById('nombre').value;
@@ -221,7 +221,7 @@
                 marca_id
             };
 
-            // Enviar la solicitud POST para agregar el producto
+            //solicitud POST para agregar el producto
             fetch('http://localhost:3000/productos', {
                 method: 'POST',
                 headers: {
@@ -254,7 +254,7 @@
 
             const nombre_categoria = document.getElementById('nombre_categoria').value;
 
-            // Enviar la solicitud POST para agregar la categoría
+            //solicitud POST para agregar la categoría
             fetch('http://localhost:3000/categorias', {
                 method: 'POST',
                 headers: {
@@ -272,7 +272,7 @@
             })
             .then(data => {
                 alert('Categoría agregada con éxito');
-                cargarCategorias(); // Recargar categorías
+                cargarCategorias(); 
                 document.getElementById('agregarCategoriaForm').reset(); // Limpiar formulario
             })
             .catch(error => {
@@ -281,13 +281,13 @@
             });
         });
 
-        // Manejar el envío del formulario para agregar una marca
+        //envío del formulario para agregar una marca
         document.getElementById('agregarMarcaForm').addEventListener('submit', function(event) {
             event.preventDefault(); // Evitar que la página se recargue
 
             const nombre_marca = document.getElementById('nombre_marca').value;
 
-            // Enviar la solicitud POST para agregar la marca
+            // solicitud POST para agregar la marca
             fetch('http://localhost:3000/marcas', {
                 method: 'POST',
                 headers: {
